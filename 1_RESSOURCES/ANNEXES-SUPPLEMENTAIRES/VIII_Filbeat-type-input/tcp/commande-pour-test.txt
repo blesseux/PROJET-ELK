@@ -1,0 +1,1 @@
+echo "champs1 champs2 champs3" | nc 127.0.0.1 9000

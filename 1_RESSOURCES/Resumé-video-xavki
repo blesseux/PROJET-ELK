@@ -1,0 +1,61 @@
+INFO GENERALE
+	LOGSTASH
+		DEBUG: tail -f /var/log/logstash/logstash-plain.log (chemin peut-etre différent comme je suis sur un conteneur)
+
+
+ELK - 10. LOGSTASH : MULTI INPUT FILEBEAT ET MULTI-INDEX
+	MULTI SOURCES A PARTIR DU FILEBEAT ET DU LOGSTASH
+	-Comment supprimer les patterns Kibanav et Elasticsearch  
+	-Filebeat : 
+		Deux Input type : container (+Ajout d'un tag) et syslog (écoute port udp 514)  (besoin de faire une modif fichier syslog + activation module filebeat syslog)
+	-Logstash :
+		Input type : beats port 5044
+		Filter :
+			if [fileset][name] == syslog (les fichiers syslog contiennent tous un nom fileset suivi du name syslog)
+				Grok : Grok syslog prédéfinis
+				add_field = timestamp (pour la date de reception) et host (pour savoir de quelle machine on la receptionne ) #Ajout de champs possible 
+			syslog_pri = Permet d'utiliser les priorité (Warning, Info ...) de syslog  
+			(video a 6.53mins)
+			Transformation du format de la date
+			Ajout d'un tag syslog (rubrique mutate (add_tag))
+			if [input][type] == container (on fait match les logs provenant du type container PAS POSSIBLE AVEC l'input type syslog car on utilise le module)
+				Grok: Spécifique a ce que l' on fait tourner dans les conteneurs dans notre cas un serveur nginx
+				Tag docker deja present car il se fait tag dans le filebeat
+		Output : (en deux partie)
+			if syslog in tag
+				envoie elasticsearch
+				nom index syslog-date
+			if docker in tag
+				envoie elasticsearch
+				nom index docker-date
+		A RETENIR 
+			ON PEUT AVOIR DIFFERENTS TYPE D'INPUT et DES OUTPUTS EN FONCTION DES TAGS
+			POUR SYSLOG : GRACE AU SYSLOG_PRI  ON PEUT RECUPERE NIVEAU DE SEVERITE EXEMPLE : NOTICE (utile pour les filtre dans kibana pour rechercher par exemple que les critiques)
+			ON PEUT AJOUTER DES TAG SOIT DANS LE FILEBEAT OU PAR LE LOGSTASH
+
+ ELK - 11. FILEBEAT : OUTPUT POUR LOGSTASH
+ 	OPTIMISATION DU RESEAU DE TRANSFERT ENTRE FILEBEAT ET LOGSTASH
+ 		-LOADBALANCING ENTRE DEUX STACK ELK (dont logstash différents) => DANS CETTE VIDEO IL FAUDRAIT AJOUTER UNE CLUSTER ELASTICSEARCH POUR VOIR LA REEL UTILITE
+ 		 Compression_level 0 à 10 : compresser les packets entre filebeat et logstash (permet d'avoir des paquets plus petit) donc save bandwith MAIS on consomme plus de CPU à la compression et decompression
+ 		-Index: On peut set le nom de l'index directement dans Filebeat au lieu qu'il soit fait dans logstash
+ 		-SSL : MISE EN PLACE DU CHIFFREMENT DE LA DATA ENTRE FILEBEAT ET LOGSTASH
+
+
+ELK - 12. FILEBEAT : OUTPUT VERS KAFKA PUIS INPUT KAFKA SUR LOGSTASH
+	FILEBEAT DEPOSE LOG DANS KAFKA (BUFFER SOUS FORME DE TOPIC)
+	AVANTAGE:
+		Permet de répartir les type de log dans différents topic (syslog, docker, log ...)
+		Fait office d'une zone tampon (Gestion de la quantité de log a envoier a logstash en fonction du taux de traffic + Conservation des logs qui ne sont pas envoyés)
+	2mins : Dans cette video on lance un DOCKER CLUSTER KAFKA (3 machines que l'on appelle des ZOOKEEPER (sorte de base de données) + 3 machines KAFKA)
+	SUR FILEBEAT : PARTIE OUTPUT
+		Envoie a KAFKA (l'une des machines )
+		topic: filebeat (C'EST LE FILEBEAT QUI VA CREER LE TOPIC KAFKA)
+		codec.format : (par défaut format .json MAIS on peut forcer format type string)
+			String comme ça on aura une ligne plate + Ajout du timstamp en debut de ligne de log (le @timstamp est deja present de base mais on lui dit de le mettre devant (plus lisible))
+		compression : en gzip
+		required_acks : "1" (nombre de noeux qui doivent acquité pour ce dire qu'un message a bien été envoyé)
+		max_message_bytes : 1M (taille max pour un message)
+		close_inactive : 10m (au bout de combien de temps d'inactivé en se deco de kafka)
+	SUR LOGSTASH : PARTIE INPUT (8.20mins)
+		Ecoute sur kafka sur topic filebeat
+	INFO : kafkacat -C -b nomhote:port -t filebeat (permet de voir en direct ce qui arrive dans le topic Filebeat)
