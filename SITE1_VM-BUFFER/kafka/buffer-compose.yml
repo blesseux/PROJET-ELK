@@ -1,0 +1,23 @@
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper-kafka
+    network_mode: host
+    ports:
+      - "2181:2181"
+
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    network_mode: host
+    environment:
+     KAFKA_ADVERTISED_HOST_NAME : BUFFER
+     KAFKA_ZOOKEEPER_CONNECT: localhost:2181
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+
+
+#NETWORK : HOST permet a ce que le conteneur soit totalement integré a la VM ex: l'hostname du docker (et ip) seront les meme que l'hote

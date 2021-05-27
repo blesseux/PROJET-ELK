@@ -1,0 +1,27 @@
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+    container_name: elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+
+#CREATION D'UN NOUVEAU NETWORK DEDIEE POUR ELK 
+#BRIDGE CORRESPOND AU TYPE DE RESEAU PAR DEFAUT DE DOCKER : 
+#  -LES CONTENEURS COMMUNIQUENT ENTRE EUX SUR LE MEME RESEAU DOCKER (network-elk)
+#  -On acces internet
+#  -Necessite un forward de port pour communiquer avec eux vers de l'exterieur
+networks:
+  elastic:
+    driver: bridge

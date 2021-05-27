@@ -1,0 +1,51 @@
+May 17 20:47:07.957 HYPERVISOR: Release 0.2.17-x86/Windows (tag 2017072410)
+May 17 20:47:07.958 HYPERVISOR: Started on IP = localhost, TCP port = 61638.
+May 17 20:47:08.332 HYPERVISOR: exec_cmd: hypervisor version 
+May 17 20:47:08.333 HYPERVISOR: exec_cmd: hypervisor working_dir C:\Users\brian\GNS3\projects\untitled\project-files\dynamips 
+May 17 20:47:08.337 GENERAL: working_dir=C:\Users\brian\GNS3\projects\untitled\project-files\dynamips
+May 17 20:47:08.338 HYPERVISOR: exec_cmd: hypervisor working_dir C:\Users\brian\GNS3\projects\untitled\project-files\dynamips\77166b84-ad04-4b1c-a9c2-fa1f6165255d 
+May 17 20:47:08.338 GENERAL: working_dir=C:\Users\brian\GNS3\projects\untitled\project-files\dynamips\77166b84-ad04-4b1c-a9c2-fa1f6165255d
+May 17 20:47:08.339 HYPERVISOR: exec_cmd: vm create R1 1 c3600 
+May 17 20:47:08.341 VM: VM R1 created.
+May 17 20:47:08.342 HYPERVISOR: exec_cmd: vm set_con_tcp_port R1 5000 
+May 17 20:47:08.342 HYPERVISOR: exec_cmd: c3600 get_mac_addr R1 
+May 17 20:47:08.343 HYPERVISOR: exec_cmd: vm set_exec_area R1 64 
+May 17 20:47:08.344 HYPERVISOR: exec_cmd: vm get_status R1 
+May 17 20:47:08.344 HYPERVISOR: exec_cmd: vm set_idle_pc R1 0x605d2390 
+May 17 20:47:08.345 HYPERVISOR: exec_cmd: vm set_ios R1 C:/Users/brian/GNS3/images/IOS/c3640-ik9o3s-mz.124-13.image 
+May 17 20:47:08.346 HYPERVISOR: exec_cmd: c3600 set_mac_addr R1 cc01.5acc.0000 
+May 17 20:47:08.347 HYPERVISOR: exec_cmd: vm set_nvram R1 256 
+May 17 20:47:08.347 HYPERVISOR: exec_cmd: vm set_ram R1 192 
+May 17 20:47:08.348 HYPERVISOR: exec_cmd: vm get_status R1 
+May 17 20:47:08.348 HYPERVISOR: exec_cmd: vm slot_add_binding R1 0 0 NM-1FE-TX 
+May 17 20:47:08.349 HYPERVISOR: exec_cmd: vm get_status R1 
+May 17 20:47:08.349 HYPERVISOR: exec_cmd: vm slot_add_binding R1 1 0 NM-1FE-TX 
+May 17 20:47:08.350 HYPERVISOR: exec_cmd: vm get_status R1 
+May 17 20:47:08.350 HYPERVISOR: exec_cmd: vm slot_add_binding R1 2 0 NM-4E 
+May 17 20:47:08.351 HYPERVISOR: exec_cmd: vm get_status R1 
+May 17 20:47:08.351 HYPERVISOR: exec_cmd: vm slot_add_binding R1 3 0 NM-4T 
+May 17 20:47:11.067 HYPERVISOR: exec_cmd: nio create_udp udp-3b0ab172-84cc-4544-9fc5-383ab84a2fe2 10002 127.0.0.1 10003 
+May 17 20:47:11.321 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R1 0 0 udp-3b0ab172-84cc-4544-9fc5-383ab84a2fe2 
+May 17 20:47:11.321 HYPERVISOR: exec_cmd: vm get_status R1 
+May 17 20:47:15.000 HYPERVISOR: exec_cmd: vm create Ghost 0 c3600 
+May 17 20:47:15.002 VM: VM Ghost created.
+May 17 20:47:15.004 HYPERVISOR: exec_cmd: vm set_ios Ghost C:/Users/brian/GNS3/images/IOS/c3640-ik9o3s-mz.124-13.image 
+May 17 20:47:15.005 HYPERVISOR: exec_cmd: vm set_ghost_status Ghost 1 
+May 17 20:47:15.005 HYPERVISOR: exec_cmd: vm set_ghost_file Ghost C:\Users\brian\GNS3\projects\untitled\project-files\dynamips\c3640-ik9o3s-mz.124-13.image-192.ghost 
+May 17 20:47:15.006 HYPERVISOR: exec_cmd: vm set_ram Ghost 192 
+May 17 20:47:15.006 HYPERVISOR: exec_cmd: vm get_status Ghost 
+May 17 20:47:15.006 HYPERVISOR: exec_cmd: vm set_config Ghost configs\i0_startup-config.cfg 
+May 17 20:47:15.007 HYPERVISOR: exec_cmd: vm start Ghost 
+May 17 20:47:15.355 HYPERVISOR: exec_cmd: vm get_status Ghost 
+May 17 20:47:15.356 HYPERVISOR: exec_cmd: vm stop Ghost 
+May 17 20:47:15.474 VM: VM Ghost shutdown.
+May 17 20:47:15.475 HYPERVISOR: exec_cmd: vm extract_config Ghost 
+May 17 20:47:15.477 HYPERVISOR: exec_cmd: vm clean_delete Ghost 
+May 17 20:47:15.477 VM: VM Ghost destroyed.
+May 17 20:47:15.487 HYPERVISOR: exec_cmd: vm set_ghost_status R1 2 
+May 17 20:47:15.487 HYPERVISOR: exec_cmd: vm set_ghost_file R1 C:\Users\brian\GNS3\projects\untitled\project-files\dynamips\c3640-ik9o3s-mz.124-13.image-192.ghost 
+May 17 20:47:15.488 HYPERVISOR: exec_cmd: vm get_status R1 
+May 17 20:47:15.488 HYPERVISOR: exec_cmd: vm set_config R1 configs\i1_startup-config.cfg configs\i1_private-config.cfg 
+May 17 20:47:15.489 HYPERVISOR: exec_cmd: vm start R1 
+May 17 20:47:36.219 HYPERVISOR: exec_cmd: vm set_ios R1 C:/Users/brian/GNS3/images/IOS/c3640-ik9o3s-mz.124-13.image 
+May 17 20:47:45.788 HYPERVISOR: exec_cmd: vm extract_config R1 

@@ -1,0 +1,18 @@
+version: '2'
+services:
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.0
+    container_name: kibana
+    environment:
+      SERVER_NAME: kibana
+      #AJOUT DU NODE ELASTICSEARCH
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+
+#AJOUT DE KIBANA DANS LE MEME RESEAU QUE ELASTICSEARCH
+networks:
+  elastic:
+    driver: bridge
