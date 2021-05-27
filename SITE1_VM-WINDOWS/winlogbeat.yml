@@ -1,0 +1,23 @@
+winlogbeat.event_logs:
+  - name: Security
+    #On va recuperer uniquement connexion échoué et succes (id_evenement)
+    event_id: 4624, 4625
+    processors:
+      - add_tags: 
+          tags: ["site1-windows"]
+
+
+
+# ------------------------------ Logstash Output -------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["192.168.1.24:5044"]
+
+# ================================= Processors =================================
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~
+
+
+
